@@ -12,7 +12,7 @@
     "jira:debug-fields": "node scripts/jira-debug-fields.js"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.700.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1054.0",
     "@aws-sdk/client-lambda": "^3.700.0",
     "@aws-sdk/client-secrets-manager": "^3.700.0",
     "@aws-sdk/credential-provider-node": "^3.700.0",
