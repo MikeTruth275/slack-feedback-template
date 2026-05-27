@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: slack-feedback-template
+  description: Reusable Slack app template for product feedback capture and triage
+  annotations:
+    github.com/project-slug: your-org/slack-feedback-template
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - python
+    - pulumi
+    - aws
+    - slack
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform
+  system: product-feedback

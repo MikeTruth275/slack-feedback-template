@@ -1,0 +1,68 @@
+name: "Pulumi Infrastructure"
+description: "Set up dependencies, build the Lambda bundle, and run Pulumi"
+
+inputs:
+  command:
+    description: "Pulumi command to run, usually preview or up"
+    required: true
+  stack-name:
+    description: "Pulumi stack name, for example org/project/dev or dev"
+    required: true
+  aws-region:
+    description: "AWS region"
+    required: false
+    default: "us-east-1"
+  aws-role-to-assume:
+    description: "IAM role ARN trusted by GitHub OIDC"
+    required: true
+  infisical-external-id:
+    description: "Optional external ID for an Infisical sync role"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        enable-cache: true
+        cache-dependency-glob: "pyproject.toml"
+
+    - name: Set up Python
+      shell: bash
+      run: uv python install 3.12
+
+    - name: Install Python dependencies
+      shell: bash
+      run: uv sync --no-install-project
+
+    - name: Build Lambda bundle
+      shell: bash
+      run: cd app && npm ci && npm run build
+
+    - name: Assume AWS OIDC role
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ inputs.aws-region }}
+        role-to-assume: ${{ inputs.aws-role-to-assume }}
+
+    - name: Set optional Infisical external ID config
+      if: ${{ inputs.infisical-external-id != '' }}
+      shell: bash
+      env:
+        STACK_NAME: ${{ inputs.stack-name }}
+        INFISICAL_EXTERNAL_ID: ${{ inputs.infisical-external-id }}
+      run: |
+        pulumi stack select "$STACK_NAME"
+        pulumi config set --secret infisicalExternalId "$INFISICAL_EXTERNAL_ID"
+
+    - name: Run Pulumi
+      uses: pulumi/actions@v6
+      with:
+        command: ${{ inputs.command }}
+        stack-name: ${{ inputs.stack-name }}
+        upsert: ${{ inputs.command == 'up' }}
+        refresh: true
+        diff: true
+        work-dir: .

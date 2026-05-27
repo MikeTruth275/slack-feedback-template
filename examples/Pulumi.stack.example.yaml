@@ -1,0 +1,17 @@
+# Copy to Pulumi.<stack>.yaml after `pulumi stack init <stack>` and replace
+# placeholders with values for your AWS account and integrations.
+config:
+  aws:region: us-east-1
+  slack-feedback-template:secretPrefix: my-slack-feedback-app/
+  slack-feedback-template:kmsAliasName: alias/my-slack-feedback-app
+  slack-feedback-template:databaseName: feedback
+  slack-feedback-template:databaseUsername: feedback_app
+  slack-feedback-template:databaseMasterUsername: feedback_admin
+  slack-feedback-template:lambdaReservedConcurrency: 5
+  slack-feedback-template:enableInfisicalSecretSyncRole: false
+  slack-feedback-template:enableOmniReadonlyUser: false
+  # Optional BI/readonly database access.
+  # slack-feedback-template:omniAllowedCidrs:
+  #   - 203.0.113.10/32
+  # Optional alarm topic.
+  # slack-feedback-template:alarmTopicArn: arn:aws:sns:us-east-1:123456789012:alerts

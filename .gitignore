@@ -1,0 +1,14 @@
+*.pyc
+venv/
+node_modules/
+app/dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+app/src/accounts.csv
+app/src/channel-config.local.js
+app/src/jira-project-config.local.js
+Pulumi.*.yaml
+!Pulumi.yaml
+!examples/Pulumi.stack.example.yaml

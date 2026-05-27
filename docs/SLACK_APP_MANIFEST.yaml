@@ -1,0 +1,32 @@
+display_information:
+  name: Product Feedback Bot
+features:
+  bot_user:
+    display_name: Product Feedback Bot
+    always_online: false
+  slash_commands:
+    - command: /logfeedback
+      description: Log structured product feedback
+      usage_hint: customer asks, pain, urgency
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - channels:join
+      - channels:read
+      - chat:write
+      - chat:write.public
+      - commands
+      - groups:history
+      - groups:read
+      - im:write
+      - users:read
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://your-cloudfront-domain.example.com/slack/events
+  org_deploy_enabled: false
+  socket_mode_enabled: true
+  token_rotation_enabled: false
